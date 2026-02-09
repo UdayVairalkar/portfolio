@@ -1,13 +1,23 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { Github, Star, GitFork, ExternalLink } from 'lucide-react';
 
-const repositories = [
+type Repository = {
+  name: string;
+  description: string;
+  language: string;
+  stars: number;
+  forks: number;
+  url?: string; // optional because Java DSA link is not ready
+};
+
+const repositories: Repository[] = [
   {
     name: 'college-management-system',
     description: 'A comprehensive web application for managing college operations',
     language: 'Java',
     stars: 5,
     forks: 2,
+    url: 'https://github.com/UdayVairalkar/College-management-System',
   },
   {
     name: 'kisancare',
@@ -15,6 +25,7 @@ const repositories = [
     language: 'JavaScript',
     stars: 3,
     forks: 1,
+    url: 'https://github.com/UdayVairalkar/Kisancare_webapp',
   },
   {
     name: 'java-dsa-practice',
@@ -22,6 +33,8 @@ const repositories = [
     language: 'Java',
     stars: 4,
     forks: 0,
+    // TODO: Add GitHub repository URL here once project is completed
+    // url: 'PASTE_JAVA_DSA_GITHUB_REPO_URL_HERE'
   },
   {
     name: 'portfolio-website',
@@ -29,6 +42,7 @@ const repositories = [
     language: 'TypeScript',
     stars: 2,
     forks: 1,
+    url: 'https://github.com/UdayVairalkar/portfolio',
   },
 ];
 
@@ -44,7 +58,7 @@ const RepoCard = ({
   repo,
   index,
 }: {
-  repo: typeof repositories[0];
+  repo: Repository;
   index: number;
 }) => {
   const { ref, isVisible } = useScrollAnimation(0.2);
@@ -59,19 +73,27 @@ const RepoCard = ({
     >
       <div className="flex items-start justify-between mb-4">
         <Github className="w-5 h-5 text-muted-foreground" />
-        <a
-          href={`https://github.com/udayvairalkar/${repo.name}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-4 py-2 text-xs font-medium bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-        >
-          View Code
-        </a>
+
+        {repo.url ? (
+          <a
+            href={repo.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-4 py-2 text-xs font-medium bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+          >
+            View Code
+          </a>
+        ) : (
+          <span className="px-4 py-2 text-xs font-medium bg-muted text-muted-foreground rounded-lg cursor-not-allowed">
+            Coming Soon
+          </span>
+        )}
       </div>
 
       <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors font-mono">
         {repo.name}
       </h3>
+
       <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
         {repo.description}
       </p>
@@ -79,7 +101,9 @@ const RepoCard = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span
-            className={`w-3 h-3 rounded-full ${languageColors[repo.language] || 'bg-gray-500'}`}
+            className={`w-3 h-3 rounded-full ${
+              languageColors[repo.language] || 'bg-gray-500'
+            }`}
           />
           <span className="text-xs text-muted-foreground">{repo.language}</span>
         </div>
@@ -105,7 +129,7 @@ export const GitHub = () => {
   return (
     <section id="github" className="py-24 relative bg-secondary/20">
       <div className="container mx-auto px-6">
-        <div ref={ref} className={`${isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
+        <div ref={ref} className={isVisible ? 'animate-fade-up' : 'opacity-0'}>
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
             <span className="gradient-text">GitHub Showcase</span>
           </h2>
@@ -122,7 +146,7 @@ export const GitHub = () => {
 
         <div className="text-center">
           <a
-            href="https://github.com/udayvairalkar"
+            href="https://github.com/UdayVairalkar"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-8 py-4 glass-card border-primary/30 hover:border-primary hover:glow-effect rounded-lg font-medium transition-all duration-300 group"
